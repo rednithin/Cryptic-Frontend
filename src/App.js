@@ -15,7 +15,7 @@ export default () => {
     StoreContext
   );
   useEffect(() => {
-    let tasksInterval = setInterval(getTasks, 5000);
+    let tasksInterval = setInterval(getTasks, 3000);
     // let fileNamesInterval = setInterval(getFilenames, 8000);
     return () => {
       clearInterval(tasksInterval);
@@ -72,11 +72,11 @@ export default () => {
               <Redirect from="*" to="/" />
             </Switch>
           </Layout.Content>
-          <Layout.Footer>Footer</Layout.Footer>
+          {/* <Layout.Footer style={{ background: "white" }}>Footer</Layout.Footer> */}
         </Layout>
         <Layout.Sider
           style={{ background: "white", borderLeft: "1px solid silver" }}
-          width={500}
+          width={400}
         >
           {store.tasks ? (
             <Collapse>

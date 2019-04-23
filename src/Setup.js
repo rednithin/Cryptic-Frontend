@@ -50,7 +50,7 @@ export default () => {
   const password = useField("password", form);
 
   return (
-    <Card style={{ width: "480px", margin: "auto" }}>
+    <Card style={{ width: "600px", margin: "auto" }}>
       <form onSubmit={handleSubmit}>
         <div>
           <Input

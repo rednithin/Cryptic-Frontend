@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useField, useForm } from "react-final-form-hooks";
 import { Card, Input, Button, Select } from "antd";
 import * as yup from "yup";
@@ -45,12 +45,37 @@ const validate = async values => {
 };
 
 export default () => {
-  const [store, _] = useContext(StoreContext);
+  const [store, { getFilenames, getStrategies }] = useContext(StoreContext);
+
+  useMemo(getFilenames, [store.tasks]);
+  useMemo(getStrategies, [store.tasks]);
 
   const { form, handleSubmit, values, pristine, submitting } = useForm({
     onSubmit,
-    validate
+    validate,
+    initialValues: {
+      warmup: 0
+    }
   });
+
+  useEffect(() => {
+    console.log(values.strategy);
+    let config = "";
+    for (let i = 0; i < store.strategies.length; i++) {
+      if (values.strategy === store.strategies[i].name) {
+        config = store.strategies[i].hyper;
+        break;
+      }
+    }
+    console.log(config);
+    if (values.strategy) {
+      form.reset({
+        ...values,
+        config
+      });
+    }
+    return () => {};
+  }, [values.strategy]);
 
   const filenames = useField("filenames", form);
   const strategy = useField("strategy", form);
@@ -58,7 +83,7 @@ export default () => {
   const config = useField("config", form);
 
   return (
-    <Card style={{ width: "480px", margin: "auto" }}>
+    <Card style={{ width: "600px", margin: "auto" }}>
       <form onSubmit={handleSubmit}>
         <div>
           <Select
@@ -89,8 +114,8 @@ export default () => {
             placeholder="Select an strategy"
           >
             {store.strategies.map(strategy => (
-              <Select.Option key={strategy} value={strategy}>
-                {strategy}
+              <Select.Option key={strategy.name} value={strategy.name}>
+                {strategy.name}
               </Select.Option>
             ))}
           </Select>
@@ -117,7 +142,7 @@ export default () => {
         <br />
         <div>
           <Input.TextArea
-            rows={10}
+            rows={15}
             placeholder="Hyper Parameter Config"
             {...config.input}
             disabled={!values.strategy}

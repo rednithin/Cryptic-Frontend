@@ -61,6 +61,19 @@ export default (dispatch, ACTION_TYPES) => {
         console.log(e);
         notif("error", "Queuing Failed");
       }
+    },
+    doBacktest: async values => {
+      try {
+        let backtest = (await axios.post(
+          "http://127.0.0.1:5000/backtest",
+          values
+        )).data;
+        notif("success", "Success", `Backtest is successful`);
+        changeProps({ backtest });
+      } catch (e) {
+        console.log(e);
+        notif("error", "Backtest Failed");
+      }
     }
   };
 };

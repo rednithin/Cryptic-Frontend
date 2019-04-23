@@ -24,7 +24,7 @@ const defaultState = {
   intervals: {
     Binance: ["1m", "3m", "15m"]
   },
-  filenames: ["A", "B"],
+  filenames: [],
   strategies: [],
   tasks: undefined
 };
