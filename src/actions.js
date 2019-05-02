@@ -74,6 +74,20 @@ export default (dispatch, ACTION_TYPES) => {
         console.log(e);
         notif("error", "Backtest Failed");
       }
+    },
+    doHyperOpt: async values => {
+      try {
+        let job = (await axios.post("http://127.0.0.1:5000/hyperopt", values))
+          .data;
+        notif(
+          "success",
+          "Queued",
+          `Download Dataset is Queued as job ${job.id}`
+        );
+      } catch (e) {
+        console.log(e);
+        notif("error", "Queuing Failed");
+      }
     }
   };
 };

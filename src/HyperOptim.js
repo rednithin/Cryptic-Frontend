@@ -4,9 +4,9 @@ import { Card, Input, Button, Select, AutoComplete } from "antd";
 import * as yup from "yup";
 import { StoreContext } from "./Store";
 
-const onSubmit = async values => {
-  window.alert(JSON.stringify(values, 0, 2));
-};
+// const onSubmit = async values => {
+//   window.alert(JSON.stringify(values, 0, 2));
+// };
 
 const validate = async values => {
   const validator = yup.object().shape({
@@ -49,13 +49,15 @@ const validate = async values => {
 };
 
 export default () => {
-  const [store, { getFilenames, getStrategies }] = useContext(StoreContext);
+  const [store, { getFilenames, getStrategies, doHyperOpt }] = useContext(
+    StoreContext
+  );
 
   useMemo(getFilenames, [store.tasks]);
   useMemo(getStrategies, [store.tasks]);
 
   const { form, handleSubmit, values, pristine, submitting } = useForm({
-    onSubmit,
+    onSubmit: doHyperOpt,
     validate,
     initialValues: {
       warmup: 0
