@@ -15,7 +15,7 @@ export default () => {
     StoreContext
   );
   useEffect(() => {
-    let tasksInterval = setInterval(getTasks, 3000);
+    let tasksInterval = setInterval(getTasks, 10000);
     // let fileNamesInterval = setInterval(getFilenames, 8000);
     return () => {
       clearInterval(tasksInterval);

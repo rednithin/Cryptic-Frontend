@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { useField, useForm } from "react-final-form-hooks";
-import { Card, Input, Button, Select } from "antd";
+import { Card, Input, Button, Select, AutoComplete } from "antd";
 import * as yup from "yup";
 import { StoreContext } from "./Store";
 
@@ -15,6 +15,10 @@ const validate = async values => {
       .min(1)
       .default([]),
     strategy: yup
+      .string()
+      .required()
+      .default(""),
+    savefile: yup
       .string()
       .required()
       .default(""),
@@ -59,19 +63,12 @@ export default () => {
   });
 
   useEffect(() => {
-    console.log(values.strategy);
-    let config = "";
-    for (let i = 0; i < store.strategies.length; i++) {
-      if (values.strategy === store.strategies[i].name) {
-        config = store.strategies[i].hyper;
-        break;
-      }
-    }
-    console.log(config);
+    console.log(store);
     if (values.strategy) {
       form.reset({
         ...values,
-        config
+        config: store.hypers[values.strategy],
+        savefile: ""
       });
     }
     return () => {};
@@ -81,6 +78,7 @@ export default () => {
   const strategy = useField("strategy", form);
   const warmup = useField("warmup", form);
   const config = useField("config", form);
+  const savefile = useField("savefile", form);
 
   return (
     <Card style={{ width: "600px", margin: "auto" }}>
@@ -114,14 +112,37 @@ export default () => {
             placeholder="Select an strategy"
           >
             {store.strategies.map(strategy => (
-              <Select.Option key={strategy.name} value={strategy.name}>
-                {strategy.name}
+              <Select.Option key={strategy} value={strategy}>
+                {strategy}
               </Select.Option>
             ))}
           </Select>
           <font color="red">
             {strategy.meta.touched && strategy.meta.error && (
               <span>{strategy.meta.error}</span>
+            )}
+          </font>
+        </div>
+        <br />
+        <div>
+          <AutoComplete
+            dataSource={
+              values.strategy
+                ? Object.keys(store.configs[values.strategy]).filter(file =>
+                    file.startsWith(values.savefile)
+                  )
+                : []
+            }
+            // style={{ width: 450 }}
+            {...savefile.input}
+            // onSelect={onSelect}
+            // onSearch={this.handleSearch}
+            placeholder="Enter filename to save best config"
+            disabled={!values.strategy}
+          />
+          <font color="red">
+            {savefile.meta.touched && savefile.meta.error && (
+              <span>{savefile.meta.error}</span>
             )}
           </font>
         </div>

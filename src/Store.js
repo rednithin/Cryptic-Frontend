@@ -26,6 +26,8 @@ const defaultState = {
   },
   filenames: [],
   strategies: [],
+  configs: {},
+  hypers: {},
   tasks: undefined
 };
 

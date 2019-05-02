@@ -40,9 +40,9 @@ export default (dispatch, ACTION_TYPES) => {
     },
     getStrategies: async () => {
       try {
-        let strategies = (await axios.get("http://127.0.0.1:5000/strategies"))
-          .data;
-        changeProps({ strategies });
+        let { data } = await axios.get("http://127.0.0.1:5000/strategies");
+        let [strategies, configs, hypers] = data;
+        changeProps({ strategies, configs, hypers });
       } catch (e) {
         console.log(e);
         changeProps({ strategies: [] });

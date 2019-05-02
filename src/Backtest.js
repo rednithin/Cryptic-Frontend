@@ -15,6 +15,10 @@ const validate = async values => {
       .string()
       .required()
       .default(""),
+    configfile: yup
+      .string()
+      .required()
+      .default(""),
     warmup: yup
       .number()
       .integer()
@@ -71,23 +75,31 @@ export default () => {
   });
 
   useEffect(() => {
-    console.log(values.strategy);
-    let config = "";
-    for (let i = 0; i < store.strategies.length; i++) {
-      if (values.strategy === store.strategies[i].name) {
-        config = store.strategies[i].config;
-        break;
-      }
-    }
-    console.log(config);
     if (values.strategy) {
       form.reset({
         ...values,
-        config
+        configfile: "",
+        config: ""
       });
     }
     return () => {};
   }, [values.strategy]);
+
+  useEffect(() => {
+    if (values.configfile) {
+      form.reset({
+        ...values,
+        config: store.configs[values.strategy][values.configfile]
+      });
+    }
+    // } else {
+    //   form.reset({
+    //     ...values,
+    //     config: null
+    //   });
+    // }
+    return () => {};
+  }, [values.configfile]);
 
   const [editConfig, setEditConfig] = useState(false);
 
@@ -95,6 +107,7 @@ export default () => {
   const strategy = useField("strategy", form);
   const warmup = useField("warmup", form);
   const config = useField("config", form);
+  const configfile = useField("configfile", form);
 
   return (
     <div>
@@ -128,14 +141,39 @@ export default () => {
               placeholder="Select an strategy"
             >
               {store.strategies.map(strategy => (
-                <Select.Option key={strategy.name} value={strategy.name}>
-                  {strategy.name}
+                <Select.Option key={strategy} value={strategy}>
+                  {strategy}
                 </Select.Option>
               ))}
             </Select>
             <font color="red">
               {strategy.meta.touched && strategy.meta.error && (
                 <span>{strategy.meta.error}</span>
+              )}
+            </font>
+          </div>
+          <br />
+          <div>
+            <Select
+              showSearch
+              {...configfile.input}
+              value={configfile.input.value || undefined}
+              placeholder="Select a Config File"
+              disabled={!values.strategy}
+            >
+              {values.strategy
+                ? Object.keys(store.configs[values.strategy]).map(
+                    configfile => (
+                      <Select.Option key={configfile} value={configfile}>
+                        {configfile}
+                      </Select.Option>
+                    )
+                  )
+                : null}
+            </Select>
+            <font color="red">
+              {configfile.meta.touched && configfile.meta.error && (
+                <span>{configfile.meta.error}</span>
               )}
             </font>
           </div>
