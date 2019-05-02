@@ -7,6 +7,7 @@ import { Switch, Route, Redirect } from "react-router";
 import { Layout, Menu, Collapse, List } from "antd";
 import Dataset from "./Dataset";
 import Backtest from "./Backtest";
+import PaperTrading from "./PaperTrading";
 import HyperOptim from "./HyperOptim";
 import { StoreContext } from "./Store";
 
@@ -59,6 +60,9 @@ export default () => {
                   Hyper Parameter Optimization
                 </NavLink>
               </Menu.Item>
+              <Menu.Item key="7">
+                <NavLink to="/papertrading">Paper Trading</NavLink>
+              </Menu.Item>
             </Menu>
           </Layout.Header>
           <Layout.Content style={{ height: "92vh" }}>
@@ -67,6 +71,7 @@ export default () => {
               <Route exact path="/dataset" component={Dataset} />
               <Route exact path="/hyperoptimization" component={HyperOptim} />
               <Route exact path="/backtest" component={Backtest} />
+              <Route exact path="/papertrading" component={PaperTrading} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/" component={Homepage} />
               <Redirect from="*" to="/" />

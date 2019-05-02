@@ -88,6 +88,19 @@ export default (dispatch, ACTION_TYPES) => {
         console.log(e);
         notif("error", "Queuing Failed");
       }
+    },
+    doPaperTrading: async values => {
+      try {
+        await axios.post("http://127.0.0.1:5000/papertrading", values);
+        notif(
+          "success",
+          "Paper Trading",
+          `Spawned new terminal for paper trading.`
+        );
+      } catch (e) {
+        console.log(e);
+        notif("error", "Spawning Terminal Failed");
+      }
     }
   };
 };
