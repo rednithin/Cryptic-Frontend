@@ -3,6 +3,7 @@ import { useField, useForm } from "react-final-form-hooks";
 import { Card, Input, Icon, Button, Select, DatePicker } from "antd";
 import * as yup from "yup";
 import { StoreContext } from "./Store";
+import { Redirect } from "react-router-dom";
 
 const validate = async values => {
   const validator = yup.object().shape({
@@ -56,7 +57,9 @@ export default () => {
   const pair = useField("pair", form);
   const interval = useField("interval", form);
   const daterange = useField("daterange", form);
-
+  if (!store.user) {
+    return <Redirect to="/" />;
+  }
   return (
     <Card style={{ width: "480px", margin: "auto" }}>
       <form onSubmit={handleSubmit}>

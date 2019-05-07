@@ -4,6 +4,7 @@ import { Card, Input, Button, Select, Checkbox, Table } from "antd";
 import * as yup from "yup";
 import { StoreContext } from "./Store";
 import Plot from "react-plotly.js";
+import { Redirect } from "react-router-dom";
 
 const validate = async values => {
   const validator = yup.object().shape({
@@ -58,7 +59,7 @@ const columns = [
   }
 ];
 
-export default () => {
+export default props => {
   const [store, { getFilenames, getStrategies, doBacktest }] = useContext(
     StoreContext
   );
@@ -109,6 +110,9 @@ export default () => {
   const config = useField("config", form);
   const configfile = useField("configfile", form);
 
+  if (!store.user) {
+    return <Redirect to="/" />;
+  }
   return (
     <div>
       <Card style={{ width: "600px", margin: "auto" }}>

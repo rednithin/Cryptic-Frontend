@@ -1,7 +1,9 @@
 import React from "react";
-
+import { Card } from "antd";
 export default () => (
-  <div>
-    <p>This is the Homepage</p>
-  </div>
+  <Card style={{ width: "600px", margin: "auto" }}>
+    <div style={{ textAlign: "center" }}>
+      Welcome to Crypto Currency Trading Backtester/Papertrader
+    </div>
+  </Card>
 );

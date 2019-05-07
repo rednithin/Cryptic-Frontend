@@ -3,6 +3,7 @@ import { useField, useForm } from "react-final-form-hooks";
 import { Card, Input, Button, Select, AutoComplete } from "antd";
 import * as yup from "yup";
 import { StoreContext } from "./Store";
+import { Redirect } from "react-router-dom";
 
 // const onSubmit = async values => {
 //   window.alert(JSON.stringify(values, 0, 2));
@@ -81,7 +82,9 @@ export default () => {
   const warmup = useField("warmup", form);
   const config = useField("config", form);
   const savefile = useField("savefile", form);
-
+  if (!store.user) {
+    return <Redirect to="/" />;
+  }
   return (
     <Card style={{ width: "600px", margin: "auto" }}>
       <form onSubmit={handleSubmit}>

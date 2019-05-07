@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useField, useForm } from "react-final-form-hooks";
 import { Card, Input, Icon, Button } from "antd";
+import { StoreContext } from "./Store";
+import { Redirect } from "react-router-dom";
+
 import * as yup from "yup";
 
 const onSubmit = async values => {
@@ -40,15 +43,19 @@ const validate = async values => {
 };
 
 export default () => {
+  const [store, { setup }] = useContext(StoreContext);
+
   const { form, handleSubmit, values, pristine, submitting } = useForm({
-    onSubmit,
+    onSubmit: setup,
     validate
   });
 
   const name = useField("name", form);
   const email = useField("email", form);
   const password = useField("password", form);
-
+  if (store.user) {
+    return <Redirect to="/" />;
+  }
   return (
     <Card style={{ width: "600px", margin: "auto" }}>
       <form onSubmit={handleSubmit}>

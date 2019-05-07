@@ -17,6 +17,9 @@ const reducer = (state, action) => {
 };
 
 const defaultState = {
+  user: undefined,
+  coins: [],
+  userCoins: [],
   exchanges: ["Binance"],
   pairs: {
     Binance: ["ETHBTC", "NEOBTC", "NEOETH", "XRPBTC", "XRPETH", "LTCBTC"]

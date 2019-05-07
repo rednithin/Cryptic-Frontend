@@ -101,6 +101,58 @@ export default (dispatch, ACTION_TYPES) => {
         console.log(e);
         notif("error", "Spawning Terminal Failed");
       }
+    },
+    login: async values => {
+      try {
+        let { user } = (await axios.post(
+          "http://127.0.0.1:5000/login",
+          values
+        )).data;
+        notif("success", "Login", `Login Successfull`);
+        changeProps({ user });
+      } catch (e) {
+        console.log(e);
+        notif("error", "Login Failed");
+      }
+    },
+    setup: async values => {
+      try {
+        let { user } = (await axios.post(
+          "http://127.0.0.1:5000/setup",
+          values
+        )).data;
+        notif("success", "Setup", `Setup Successfull`);
+        changeProps({ user });
+      } catch (e) {
+        console.log(e);
+        notif("error", "Setup Failed");
+      }
+    },
+    getCoins: async values => {
+      try {
+        let { coins, userCoins } = (await axios.post(
+          "http://127.0.0.1:5000/coins",
+          values
+        )).data;
+        // notif("success", "Login", `Login Successfull`);
+        changeProps({ coins, userCoins });
+      } catch (e) {
+        console.log(e);
+        // notif("error", "Login Failed");
+      }
+    },
+    setCoins: async values => {
+      try {
+        let { userCoins } = (await axios.post(
+          "http://127.0.0.1:5000/add_coins",
+          values
+        )).data;
+        notif("success", "Modified Profile", `Updated Tracked Coins`);
+        changeProps({ userCoins });
+      } catch (e) {
+        console.log(e);
+        notif("error", "Updating Tracked Coins failed.");
+      }
     }
   };
 };
