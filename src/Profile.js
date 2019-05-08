@@ -54,7 +54,8 @@ export default () => {
   useEffect(() => {
     if (store.userCoins.length) {
       form.reset({
-        coins: store.userCoins
+        coins: store.userCoins,
+        user: store.user
       });
     }
     return () => {};
